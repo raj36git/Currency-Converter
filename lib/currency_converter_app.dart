@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
+///1. Create a variable that stores the converted currency value
+///2. Create a function that multiplies the value given by thr text field
+///3. Store the value in the variable that we created
+///4. DISPLAY the variable
 
-class CurrencyConverter extends StatelessWidget {
+
+class CurrencyConverter extends StatefulWidget {
   const CurrencyConverter({super.key});
-  ///1. Create a variable that stores the converted currency value
-  ///2. Create a function that multiplies the value given by thr text field
-  ///3. Store the value in the variable that we created
-  ///4. DISPLAY the variable
 
+  @override
+  State<CurrencyConverter> createState() => _CurrencyConverterState();
+
+}
+
+class _CurrencyConverterState extends State<CurrencyConverter> {
+
+  double result = 0.0;  ///1
+  final TextEditingController textController = TextEditingController(); ///2
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     const border = UnderlineInputBorder(
@@ -22,7 +43,7 @@ class CurrencyConverter extends StatelessWidget {
     );
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(100, 8, 63, 108),
+      backgroundColor: const Color.fromARGB(100, 18, 119, 118),
       appBar: AppBar(
         title: const Center(
           child: Text(
@@ -42,21 +63,24 @@ class CurrencyConverter extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              '0',
-              style: TextStyle(
+             Text(
+              //int -> string == intVal.toString();
+              //string -> int == int.parse(strVal);
+              'INR ${result != 0 ? result.toStringAsFixed(3) : result.toStringAsFixed(0)}',   ///4
+              style:const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 43,
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.all(10.0),
+             Padding(
+              padding:const EdgeInsets.all(10.0),
               child: TextField(
-                style: TextStyle(
+                controller: textController,
+                style: const TextStyle(
                   color: Colors.black,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter amount in USD',
                   hintStyle: TextStyle(color: Colors.black, fontSize: 18),
                   prefixIcon: Icon(Icons.monetization_on),
@@ -68,7 +92,7 @@ class CurrencyConverter extends StatelessWidget {
                   focusedBorder: border,
                   enabledBorder: border,
                 ),
-                keyboardType: TextInputType.numberWithOptions(
+                keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
               ),
@@ -77,7 +101,11 @@ class CurrencyConverter extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: TextButton(
                 onPressed: () {
-                  print('Done');
+                  // print(_controller.text);
+                  // print(double.parse(_controller.text) * 84);
+                  setState(() { ///4
+                    result = double.parse(textController.text)*84; ///3
+                  });
                 },
                 style: const ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(Colors.black),
